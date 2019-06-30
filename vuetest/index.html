@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script src='../../node_modules/vue/dist/vue.js'></script>
+
+	<style>
+		* {
+			padding: 0px;
+			margin: 0px;
+
+		}
+
+		body {
+			background: #34ace0
+		}
+
+		.login {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+
+			width: 200px;
+			padding: 100px 130px;
+
+			background: #ffda79;
+			border-radius: 5px;
+
+			text-align: center;
+		}
+
+		input,
+		button {
+
+			outline: none;
+			border: 0px;
+
+		}
+
+		.name {
+			height: 30px;
+			width: 100%;
+			text-align: center;
+			border-radius: 15px;
+			border: 1px solid #34ace0;
+			display: block;
+			margin: 10px auto;
+		}
+
+		.submit {
+			width: 120px;
+			height: 30px;
+			background: #34ace0;
+			color: white;
+
+			border-radius: 8px;
+		}
+
+		.submit:hover {
+			background: #82d5f8;
+
+		}
+
+		.converse{
+			position:absolute;
+			top:50%;
+			left:50%;
+			transform:translate(-50%,-50%);
+			background:#fff0be;
+
+			width:400px;
+		 
+			border:1px solid #ffc60a;
+			border-radius: 5px;
+			padding:10px;
+		}
+		.content{
+			height:500px;
+			background:white; 
+		}
+		.message{
+			width:76%;
+			height:30px;
+			margin-top:5px;
+			padding:0 2%;
+		}
+		.send{
+			width:18%;
+			height:30px;
+			background:rgb(7, 223, 36);
+			color:white;
+			
+		}
+		
+	</style>
+</head>
+
+<body>
+
+	<div id="app">
+		<template v-if='!user'>
+			<div class="login">
+				LOGIN
+				<input class="name" type="text" placeholder="username" maxlength="12" v-model="name">
+
+				<button class="submit" @click="login">login</button>
+
+			</div>
+		</template>
+
+		<template v-else>
+			<div class="converse">
+				<div class="content" ref="content">
+
+					<par v-for="(el,index) in contents" :key="index" :message="el"></par>
+				</div>
+				<div>
+					<input type="a" class="message" v-model="message">
+					<button class="send" @click="send">send</button>
+				</div>
+
+			</div>
+		</template>
+	</div>
+	<script>
+
+		var par ={
+			template:`
+				<p>{{message}}</p>
+			`,
+			props:['message'],
+
+		}
+
+		var app = new Vue({
+			el: '#app',
+			data: {
+				name: '',
+				user: '',
+				message:'',
+				ws:'',
+				contents:[]
+			},
+			components:{
+				'par':par
+			},
+			methods: {
+				login() {
+			  
+					var ws = new WebSocket('ws://localhost:3555');
+					ws.onerror =err=>{
+						console.log('no server')
+					}
+					ws.onopen = (event) => {
+						this.user = this.name
+						this.name = ''
+						var message = {
+							user: this.user,
+							behavior:'login'
+						}
+						ws.send(JSON.stringify(message));
+					}
+					ws.onmessage=message=>{
+						this.contents.push({
+							message:message.data
+						})
+						 
+						// var newContent= document.createElement('p')
+						// newContent.innerText=message.data
+						// this.$refs.content.append (newContent)
+					}
+					this.ws = ws;
+				},
+				send(){
+					console.log(this.ws);
+					if(!this.message){
+						return
+					}
+					var message = { 
+						behavior:'message',
+						content:this.message
+					}
+					this.ws.send(JSON.stringify(message))
+
+
+				}
+			}
+		})
+
+	</script>
+
+</body>
+
+</html>

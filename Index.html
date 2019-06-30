@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+
+<body>
+	<input type="text " id="message">
+	<button id="send">send</button>
+	<div id="content">
+
+	</div>
+
+	<script>
+		var ws = new WebSocket('ws://localhost:2333')
+		var message = document.querySelector('#message');
+		var send = document.querySelector('#send');
+		var content = document.querySelector('#content');
+
+
+		send.addEventListener('click', function (event) {
+			var value = message.value;
+			message.value = ''
+			ws.send(value);
+		})
+
+		ws.onmessage = function (str) {
+
+			content.innerHTML = `<p>${content.innerHTML + str.data}</p>`
+		}
+
+	</script>
+
+</body>
+
+</html>
