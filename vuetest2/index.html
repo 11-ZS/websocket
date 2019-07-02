@@ -49,25 +49,29 @@
 				</div>
 				<div class="conbar">
 					<div class="about"> 与 所有人 聊天中</div>
-					<div class="contents">
-						<div class="other-chat" v-for="el in chats" :key="el.username">
-							<div v-if="el.username !==user">
+					<div class="contents" ref='chats-content'>
+						<div class="chats" v-for="(el,key) in chats" :key="el.key">
+							<div class="speak-time">
+								{{getTimeString(el.time)}}
+							</div>
+							<div v-if="el.username !==user" class="other">
 
 								<div class="other-user">
 									<img src="image/avatar.jpg" width="50">
 
 								</div>
-								<span class="arrow"></span>
+								<span class="other-arrow"></span>
 								<div class="chat-content">
 									{{el.content}}
-									vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 								</div>
 							</div>
-							<div v-else>
+							<div v-else class="self">
 
 								<div class="self-user">
-										<img src="image/avatar.jpg" width="50"> 
+									<img src="image/avatar.jpg" width="50">
 								</div>
+								<span class="self-arrow"></span>
+
 								<div class="chat-content">
 									{{el.content}}
 								</div>
@@ -88,10 +92,10 @@
 								☻
 							</button>
 						</div>
-						<div contenteditable="true" class="speak-content">
+						<div id="speak-content" ref="speak-content" contenteditable="true" class="speak-content">
 
 						</div>
-						<button class="send-speak">
+						<button class="send-speak" @click="sendSpeak">
 							发送
 						</button>
 					</div>
@@ -100,23 +104,88 @@
 		</template>
 	</div>
 	<script>
+
+		var oneSeconds = 1000;
+		var oneMinutes = oneSeconds * 60;
+		var oneHours = oneMinutes * 60;
+		var oneDay = oneHours * 24;
+		var oneMonth = oneDay * 30;
+		var date = new Date("2019-7-1");
+		var nowDate = new Date();
+		console.log(nowDate.getTime());
+		console.log(date.getTime());
+		console.log(parseInt((nowDate - date) / oneDay));
+
+
+
+
 		var app = new Vue({
 			el: '#app',
 			data: {
-				user: 's',
+				user: '',
 				otherUsers: [
 					{ username: 'ssssssssssss', avatar: 'image/avatar.jpg' },
 					{ username: 'sss', avatar: 'image/avatar.jpg' },
 					{ username: 'sss', avatar: 'image/avatar.jpg' },
 				],
 				chats: [
-					{ username: '以', content: 'sdfsdfsd', time: new Date() },
-					{ username: '而', content: 'sdfsdfsd', time: new Date() },
-					{ username: '三', content: 'sdfsdfsd', time: new Date() },
-					{ username: 'a', content: 'sdfsdfsd', time: new Date() },
-					{ username: 'ew', content: 'sdfsdfsd', time: new Date() },
-					{ username: 's', content: 'sdfsdfsd', time: new Date() },
-				]
+					{ username: '以', content: 'sdfsdfsd', time: "2019-7-1 23:11:50" },
+					{ username: 'a', content: 'sdfsdfsd', time: "2019-7-2 23:11:50" },
+					{ username: 'ew', content: 'sdfsdfsd', time: "2019-7-3 01:11:50" },
+					{ username: 's', content: 'sdfsdfsd', time: "2019-7-3 02:11:50" },
+					// { username: '而', content: 'sdfsdfsd', time:   "2019-7-3 03:27:50"  },
+					// { username: '三', content: 'sdfsdfsd', time:  "2019-7-3 03:28:50" },
+				],
+			},
+			methods: {
+				sendSpeak() {
+					var content = this.$refs['speak-content'].innerText
+					this.chats.push({
+						username: 'ssdf',
+						content: 'this new content: ' + content,
+						time: new Date()
+					})
+					var chatBody = this.$refs['chats-content']
+					// console.dir(chatBody.clientHeight)
+					// console.dir(chatBody.scrollHeight)
+				},
+				getTimeString(date) {
+					date = new Date(date);
+					var year = date.getFullYear();
+					var month = date.getMonth() + 1;
+					var day = date.getDate();
+					var hours = date.getHours();
+					var minutes = date.getMinutes();
+					var seconds = date.getSeconds();
+
+					var nowDate = new Date();
+					var timeOffset = nowDate - date;
+					if (timeOffset > oneMonth) {
+						return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+					}
+					if (timeOffset > oneDay) {
+						return `${month}-${day} ${hours}:${minutes}:${seconds}`
+					}
+					if (timeOffset > oneHours) {
+						return `${hours}:${minutes}:${seconds}`
+					}
+					if (timeOffset > oneMinutes) {
+						return `${minutes}:${seconds}`
+					}
+					else {
+						return ''
+					}
+
+				}
+			},
+			watch: {
+				chats: function () {
+					this.$nextTick(function () {
+						var chatsContent = this.$refs['chats-content']
+						chatsContent.scrollTop =chatsContent.scrollHeight-chatsContent.clientHeight
+					 
+					})
+				}
 			}
 		})
 

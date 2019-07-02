@@ -218,6 +218,8 @@ margin:0 10px;
 .speak{
 	box-sizing:border-box;	
 	height:170px;
+	background:rgb(245, 245, 245);
+
 }
 .speak .tool{
 	height:30px;
@@ -240,7 +242,10 @@ margin:0 10px;
 	box-sizing:border-box;
 	height:100px;
 	font-size: 16px;
+	background:rgb(245, 245, 245);
 	outline: none;
+	border-top: 1px solid rgb(230, 230, 230);
+	/* border-bottom:1px solid rgb(230, 230, 230); */
 }
 .send-speak{
 	font-size: 14px;
@@ -253,40 +258,78 @@ margin:0 10px;
 	text-align: center;
 	float: right;
 	
+	
 	margin-top:5px;
 	margin-right: 30px;
 	background:none;
 	cursor:pointer;
 }
-.other-chat>div{
+.chats .other{
 	display:flex;
 } 
  
-.other-chat img{
+.chats img{
 	position: relative;
 }
-.chat-content{
+.chats .other .chat-content{
 	box-sizing:border-box;
 	border-radius:3px;
 	background:rgb(255, 255, 255);
-	margin-left:15px;
+
 	max-width:450px;
 	word-wrap:break-word ;
 	margin-bottom:20px;
 	padding:10px;
 }
-.arrow{
+.other-arrow{
 	border: 10px solid rgb(190, 85, 85);
     border-color: rgba(0, 0, 0, 0) rgb(255, 255, 255);
     border-left-color: rgba(0, 0, 0, 0);
     width: 0px;
     height: 0px;
-    position: absolute;
-    left: 45px;
+    position: relative;
+
     top: 9px;
 	
 }
+
+.self-arrow{
+	border: 10px solid rgb(190, 85, 85);
+    border-color: rgba(0, 0, 0, 0) rgb(148, 255, 148);
+    border-right-color: rgba(0, 0, 0, 0);
+    width: 0px;
+    height: 0px;
+    position: relative;
+
+    top: 9px;
+	
+}
+
+.self{
+	display:flex;
+	flex-direction: row-reverse
+}
 .self-user{
 	position: relative;
- 
+	 float: right;
+}
+.self .chat-content{
+	background:rgb(148, 255, 148);
+	max-width:450px;
+	text-align: left;
+	float: right;
+	padding:10px;
+	border-radius:3px;
+	word-wrap: break-word;
+	margin-bottom:20px;
+
+}
+.speak-time{
+	box-sizing:border-box;
+	width:200px;
+	position: relative;
+	margin:0 auto;
+	text-align:center;
+	font-size: 12px;
+	color:rgb(153, 153, 153);
 }
