@@ -95,7 +95,7 @@ body {
 
 }
 
-.user {
+.users .user {
 	height: 70px;
 	background: black;
 	border-radius: 6px 0 0 0;
@@ -157,17 +157,17 @@ body {
 }
 
 
-.other-user{
+.other-users .other-user{
 	position: relative;
 	box-sizing:border-box;
 	height:53px;
 	line-height: 53px;
  
 }
-.other-user:hover{
+.other-users .other-user:hover{
 	background:black;
 }
-.other-user-icon{
+.other-users .other-user-icon{
 	position: relative;
 	margin:5px 10px;
 	height:40px;
@@ -209,5 +209,84 @@ margin:0 10px;
 .contents {
 	box-sizing: border-box;
 	border-bottom: 1px solid rgb(179, 179, 179);
-	height: 450px;
+	height: 420px;
+	padding:0 15px;
+	overflow-x: none;
+	overflow-y: auto;
+}
+
+.speak{
+	box-sizing:border-box;	
+	height:170px;
+}
+.speak .tool{
+	height:30px;
+	line-height: 30px;
+}
+.speak .tool button{
+	display: block;
+	float: left;
+	font-size: 20px;
+
+	width:30px;
+	height:30px;
+	border:none;
+	margin-left:5px;
+	cursor:pointer;
+	background:none;
+	
+}
+.speak-content{
+	box-sizing:border-box;
+	height:100px;
+	font-size: 16px;
+	outline: none;
+}
+.send-speak{
+	font-size: 14px;
+	border:1px solid rgb(126, 126, 126);
+	border-radius:3px;
+	display: block;
+	width:80px;
+	height:25px;
+	line-height:25px;
+	text-align: center;
+	float: right;
+	
+	margin-top:5px;
+	margin-right: 30px;
+	background:none;
+	cursor:pointer;
+}
+.other-chat>div{
+	display:flex;
+} 
+ 
+.other-chat img{
+	position: relative;
+}
+.chat-content{
+	box-sizing:border-box;
+	border-radius:3px;
+	background:rgb(255, 255, 255);
+	margin-left:15px;
+	max-width:450px;
+	word-wrap:break-word ;
+	margin-bottom:20px;
+	padding:10px;
+}
+.arrow{
+	border: 10px solid rgb(190, 85, 85);
+    border-color: rgba(0, 0, 0, 0) rgb(255, 255, 255);
+    border-left-color: rgba(0, 0, 0, 0);
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    left: 45px;
+    top: 9px;
+	
+}
+.self-user{
+	position: relative;
+ 
 }

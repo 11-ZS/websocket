@@ -12,7 +12,7 @@
 			color: white;
 			box-sizing: border-box;
 			border: 1px solid red;
-			position:absolute;
+			position: relative;;
 			padding:6px;
 
 		}
@@ -26,6 +26,23 @@
 			
 			
 		}
+		.sj{
+			position: relative;
+			box-sizing:border-box;
+			border:1px solid red;
+			width:20px;
+			height:20px;
+			
+			
+		}
+		.sj:after{
+			content:'';
+			position: absolute;
+			
+			width:100%;
+			height:100%;
+			border:1px solid red;
+		}
 	</style>
 </head>
 
@@ -33,6 +50,23 @@
 	<div class="bg">
 		<input type="text">
 	</div>
+	<div class="sj">
+
+	</div>
+	
+	<div contenteditable=true id="divTest"></div>
+
+
+	<div  >
+		<img  src="image/avatar.jpg" width="50">
+	 
+	</div>
+
+	<script>
+		document.onauxclick =function(){
+			console.log('sdf')
+		}
+	</script>
 
 </body>
 
