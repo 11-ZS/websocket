@@ -18,9 +18,9 @@
 			<div class="login_box">
 				<div class="username">
 					<div class="logo">U</div>
-					<input type="text" name="name" placeholder="username" maxlength="12">
+					<input type="text" name="name" v-model="username" placeholder="username" maxlength="12">
 				</div>
-				<button class="submit">Sign in</button>
+				<button class="submit" @click="signIn">Sign in</button>
 
 			</div>
 		</template>
@@ -103,7 +103,9 @@
 			</div>
 		</template>
 	</div>
+	<script src="./public/js/socket.js"></script>
 	<script>
+		// var socket = new Socket("waaaas")
 
 		var oneSeconds = 1000;
 		var oneMinutes = oneSeconds * 60;
@@ -112,17 +114,16 @@
 		var oneMonth = oneDay * 30;
 		var date = new Date("2019-7-1");
 		var nowDate = new Date();
-		console.log(nowDate.getTime());
-		console.log(date.getTime());
-		console.log(parseInt((nowDate - date) / oneDay));
 
-
+		
 
 
 		var app = new Vue({
 			el: '#app',
 			data: {
+				username: '',
 				user: '',
+				socket: {},
 				otherUsers: [
 					{ username: 'ssssssssssss', avatar: 'image/avatar.jpg' },
 					{ username: 'sss', avatar: 'image/avatar.jpg' },
@@ -138,6 +139,22 @@
 				],
 			},
 			methods: {
+				signIn() {
+					this.socket = new Socket('ws://localhost:3555', this);
+
+					this.socket.ws.onopen = () => {
+						this.socket.send('signIn', {
+							user: {
+								username: this.username
+							}
+						})
+						
+					}
+
+				},
+				init(data) {
+					this.user = data.user;
+				},
 				sendSpeak() {
 					var content = this.$refs['speak-content'].innerText
 					this.chats.push({
@@ -182,8 +199,8 @@
 				chats: function () {
 					this.$nextTick(function () {
 						var chatsContent = this.$refs['chats-content']
-						chatsContent.scrollTop =chatsContent.scrollHeight-chatsContent.clientHeight
-					 
+						chatsContent.scrollTop = chatsContent.scrollHeight - chatsContent.clientHeight
+
 					})
 				}
 			}
