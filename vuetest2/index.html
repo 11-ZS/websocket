@@ -29,8 +29,8 @@
 			<div class="container">
 				<div class="users">
 					<div class="user">
-						<img class="user-avatar" src="image/avatar.jpg" width="50">
-						<div class="name">juju</div>
+						<img class="user-avatar" :src="user.avatar" width="50">
+						<div class="name">{{user.username}}</div>
 					</div>
 					<div class="search-box">
 						<i class="fa fa-search"></i>
@@ -40,7 +40,7 @@
 					</div>
 
 					<div class="other-users">
-						<div class="other-user" v-for="el in otherUsers" :key="el.name">
+						<div class="other-user" v-for="el in users" :key="el.name">
 							<img class="other-user-icon" :src="el.avatar" width="50">
 							<div class="other-username">{{el.username}}</div>
 						</div>
@@ -124,7 +124,7 @@
 				username: '',
 				user: '',
 				socket: {},
-				otherUsers: [
+				users: [
 					{ username: 'ssssssssssss', avatar: 'image/avatar.jpg' },
 					{ username: 'sss', avatar: 'image/avatar.jpg' },
 					{ username: 'sss', avatar: 'image/avatar.jpg' },
@@ -154,6 +154,9 @@
 				},
 				init(data) {
 					this.user = data.user;
+				},
+				getUsers(data){
+					this.users=data.users
 				},
 				sendSpeak() {
 					var content = this.$refs['speak-content'].innerText

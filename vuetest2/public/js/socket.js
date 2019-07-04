@@ -11,6 +11,9 @@ class Socket {
 			pack = JSON.parse(pack.data);
 			this.receive(pack);
 		}
+		this.ws.onclose=pack=>{
+			this.send('close...........')
+		}
 
 	}
 	send(type, data) {
