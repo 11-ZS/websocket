@@ -54,7 +54,7 @@
 							<div class="speak-time">
 								{{getTimeString(el.time)}}
 							</div>
-							<div v-if="el.username !==user" class="other">
+							<div v-if="el.username !==user.username" class="other">
 
 								<div class="other-user">
 									<img src="image/avatar.jpg" width="50">
@@ -159,15 +159,28 @@
 					this.users=data.users
 				},
 				sendSpeak() {
-					var content = this.$refs['speak-content'].innerText
-					this.chats.push({
-						username: 'ssdf',
-						content: 'this new content: ' + content,
-						time: new Date()
+					this.socket.send('speak',{
+						user:this.user,
+						content:this.$refs['speak-content'].innerText
 					})
-					var chatBody = this.$refs['chats-content']
+					// var content = this.$refs['speak-content'].innerText
+					// this.chats.push({
+					// 	username: 'ssdf',
+					// 	content: 'this new content: ' + content,
+					// 	time: new Date()
+					// })
+					// var chatBody = this.$refs['chats-content']
+
+
 					// console.dir(chatBody.clientHeight)
 					// console.dir(chatBody.scrollHeight)
+				},
+				speak(data){
+					this.chats.push({
+						username:data.user.username,
+						content:data.content,
+						time:new Date() 
+					})
 				},
 				getTimeString(date) {
 					date = new Date(date);

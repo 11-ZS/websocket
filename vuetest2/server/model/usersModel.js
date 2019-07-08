@@ -2,9 +2,9 @@ const modelFormat = require('./modelFormat')
 module.exports =users=>{
 	
 	let newUsers =[]
-	for(let value of users.values()){
+	for(let key of users.keys()){
 		newUsers.push(modelFormat({
-			user:value
+			 user:users.get(key)
 		}).user)
 	}
 	console.log(newUsers);
