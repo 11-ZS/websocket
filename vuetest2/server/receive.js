@@ -27,12 +27,33 @@ module.exports = socket => {
 			sendToUsers('getUsers', u)
 		},
 		speak(data) {
+			var user = data.user;
+			console.log('targetttt',quser.target);
+			if(!user.target){
 
-			sendToUsers('speak',{
-				user:data.user,
-				content:data.content
-			})
+				sendToUsers('speak',{
+					user:data.user,
+					content:data.content
+				})
+			}else{
+				for( let key of users.keys()){
+					if(key.key===user.target.key){
+						send('speak',{
+							user,
+							content:data.content
+						},key)
+					}
+				}
+				send('speak',{
+					user,
+					content:data.content 
+				})
+			}
 			 
+		},
+		updateState(data){
+			var user = data.user;
+			users.set(socket,user);
 		},
 		quit() {
 			console.log(users.get(socket).username + 'is exit')
@@ -43,14 +64,21 @@ module.exports = socket => {
 
 			sendToUsers('getUsers', u)
 		},
+
+	 
 	}
-	function send(type, data) {
+	function send(type, data,target) {
 		var pack = {
 			type: type,
 			data
 		}
 		pack = JSON.stringify(pack);
-		socket.send(pack);
+		if(!target){
+
+			socket.send(pack);
+		}else{
+			target.send(pack);
+		}
 	}
 	function sendToUsers(type, data) {
 		var pack = {

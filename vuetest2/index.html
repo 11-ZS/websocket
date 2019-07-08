@@ -34,21 +34,19 @@
 					</div>
 					<div class="search-box">
 						<i class="fa fa-search"></i>
-						<input class="search" placeholder="搜索用户" type="text">
-
-
+						<input class="search" placeholder="搜索用户" type="text"> 
 					</div>
 
 					<div class="other-users">
-						<div class="other-user" v-for="el in users" :key="el.name">
-							<img class="other-user-icon" :src="el.avatar" width="50">
-							<div class="other-username">{{el.username}}</div>
+						<div class="other-user" v-for="item in users" :key="item.name" @click="setTarget(item)">
+							<img class="other-user-icon" :src="item.avatar" width="50">
+							<div class="other-username">{{item.username}}</div>
 						</div>
 
 					</div>
 				</div>
 				<div class="conbar">
-					<div class="about"> 与 所有人 聊天中</div>
+					<div class="about"> 与 {{target}} 聊天中</div>
 					<div class="contents" ref='chats-content'>
 						<div class="chats" v-for="(el,key) in chats" :key="el.key">
 							<div class="speak-time">
@@ -101,6 +99,10 @@
 					</div>
 				</div>
 			</div>
+			<!-- 提示窗口 -->
+			<div class="prompt">
+				asdasddasd
+			</div>
 		</template>
 	</div>
 	<script src="./public/js/socket.js"></script>
@@ -122,7 +124,7 @@
 			el: '#app',
 			data: {
 				username: '',
-				user: '',
+				user: 'd',
 				socket: {},
 				users: [
 					{ username: 'ssssssssssss', avatar: 'image/avatar.jpg' },
@@ -130,12 +132,7 @@
 					{ username: 'sss', avatar: 'image/avatar.jpg' },
 				],
 				chats: [
-					{ username: '以', content: 'sdfsdfsd', time: "2019-7-1 23:11:50" },
-					{ username: 'a', content: 'sdfsdfsd', time: "2019-7-2 23:11:50" },
-					{ username: 'ew', content: 'sdfsdfsd', time: "2019-7-3 01:11:50" },
-					{ username: 's', content: 'sdfsdfsd', time: "2019-7-3 02:11:50" },
-					// { username: '而', content: 'sdfsdfsd', time:   "2019-7-3 03:27:50"  },
-					// { username: '三', content: 'sdfsdfsd', time:  "2019-7-3 03:28:50" },
+				 
 				],
 			},
 			methods: {
@@ -160,7 +157,7 @@
 				},
 				sendSpeak() {
 					this.socket.send('speak',{
-						user:this.user,
+						user:this.user, 
 						content:this.$refs['speak-content'].innerText
 					})
 					// var content = this.$refs['speak-content'].innerText
@@ -209,6 +206,23 @@
 						return ''
 					}
 
+				},
+				setTarget(user){ 
+					this.$set(this.user,'target',user);
+					console.log(this.user);
+					this.socket.send('updateState',{
+						user:this.user
+					})
+					 
+				}
+			},
+			computed:{
+				target(){
+					if(this.user.target!=null){
+						return this.user.target.username;
+					}else{
+						return '所有人'
+					}
 				}
 			},
 			watch: {
